@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* font-family: 'Raleway', sans-serif; */
+    font-family: 'Bebas Neue', sans-serif;
+}
+:root {
+    --second-color:#edac66;
+} 
+a {
+    text-decoration: none;
+}
+ul {
+    list-style: none;
+}
+body {
+    position: relative;
+}
+h2 {
+    font-size: 3em;
+}
+.padding {
+    padding: 50px 100px;
+}
+/* End */
+/* Start Header */
+header select {
+    position: absolute;
+    top: 10%;
+    left: 10px;
+    width: 70px;
+    padding: 5px;
+    border-radius: 6px;
+    background-color: var(--second-color);
+    cursor: pointer;
+}
+header {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 100px;
+    transition: .3s;
+}
+header a.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header img {
+    max-width: 70%;
+    cursor: pointer;
+    transition: .3s;
+}
+header .links,
+footer .links ul {
+    display: flex;
+    gap: 20px;
+}
+header .links li a,
+footer .links ul li a{
+    font-size: 22px;
+    color: var(--second-color);
+    position: relative;
+    transition: .3s;
+}
+header .links li a::before,
+footer .links ul li a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0%;
+    height: 3px;
+    background-color: #fff;
+    transition: .3s;
+}
+header .links li a:hover,
+footer .links ul li a:hover {
+    color: #fff;
+}
+header .links li a:hover::before,
+footer .links ul li a:hover::before {
+    width: 100%;
+} 
+header button {
+    margin-right: 100px;
+    color: var(--second-color);
+    width: 100px;
+    height: 50px;
+    background: transparent;
+    border: 3px dotted ;
+    cursor: pointer;
+    rotate: 2deg;
+    transition: .3s;
+}
+header button:hover {
+    transform: scale(1.3) rotate(-2deg);
+    color: #fff;
+}
+    /* Header Scrolled */
+    header.scrolled {
+        background: rgb(255 255 255 / 35%);
+    }
+    header.scrolled img {
+        max-width: 40%;
+    }
+/* End Header */
+/* Start About Section */
+section.about {
+    position: relative;
+    min-height: 100vh;
+    padding: 350px 100px 0;
+    background-image: url(imgs/about.jpeg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.about h4 {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+section.about::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(4px);
+    z-index: 100;
+}
+section.about .text {
+    position: relative;
+    z-index: 105;
+    color: var(--second-color);
+}
+section.about h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+section.about p {
+    font-size: 20px;
+    line-height: 2;
+}
+/* End About Section */
+/* Media Screens To These Sections */
+@media (max-width:767px) {
+    header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px 80px;
+    }
+    header img {
+        max-width: 70%;
+    }
+    section.about {
+        padding: 350px 20px 0px;
+        background-position: top;
+    }
+    header.scrolled img {
+        max-width: 50%;
+    }
+    header button {
+        margin: 0;
+    }
+}
+/* End Media Screens To These Sections */
+/* Start Gallery Section */
+section.gallery {
+    background-color: #222;
+}
+section.gallery h2 {
+    text-align: left;
+    color: var(--second-color);
+    margin-bottom: 30px;
+}
+section.gallery div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 5px;
+    justify-content: space-between;
+    align-items: center;
+}
+section.gallery img{
+    max-width: calc((100% - 10px) / 4);
+    cursor: pointer;
+    transition: .3s;
+}
+section.gallery img:hover {
+    transform: scale(.9);
+}
+@media (max-width:767px) {
+    section.gallery img {
+        max-width: calc((100% - 10px) / 3);
+    }
+}
+/* End Gallery Section */
+/* Start Services Section */
+section.services {
+    background-color: var(--second-color);
+}
+section.services .boxes {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+section.services .box {
+    flex-basis: calc(100% / 3 - 10px);
+    background: #fff;
+    padding: 40px 15px;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+section.services .box:hover {
+    transform: translateY(-5px);
+}
+section.services .box .title {
+    font-size: 1.8em;
+    max-width: 200px;
+}
+section.services .box .price {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    opacity: .3;
+    font-weight: bold;
+    font-size: 4em;
+}
+section.services .box .book-btn {
+    margin-top: 10px;
+    display: block;
+    width: fit-content;
+    padding: 10px 30px;
+    border-radius: 40px;
+    background-color: #000;
+    color: var(--second-color);
+    transition: .3s;
+}
+.book-btn:hover {
+    background-color: #555;
+    box-shadow: 0 2px 8px #edac669b;
+}
+/* End Services Section */
+
+/* Start Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding:  20px 100px 60px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+.copyright {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #222;
+    padding: 15px 100px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+footer .social {
+    margin-right: 10px;
+}
+footer .social i {
+    margin-left: 10px;
+    color: #fff;
+}
+
+footer .logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+footer .links ul {
+    flex-direction: column;
+    gap: 10px;
+}
+.hours h3 {
+    margin-bottom: 10px;
+    color: var(--second-color);
+    font-weight: bold;
+    font-size: 2em;
+}
+.hours ul li {
+    margin-bottom: 5px;
+}
+/* End Footer */
+@media (max-width:767px) {
+    .gallery {
+        padding: 20px;
+    }
+    section.services {
+        padding: 20px;
+    }
+    section.services .box{
+        flex-basis: 100%;
+    }
+    footer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+    footer .links ul{
+        flex-direction: row;
+        gap: 30px;
+    }
+}
