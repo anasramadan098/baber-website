@@ -1,57 +1,6 @@
-const sqlite3 = require('sqlite3');
-
-// const data = [
-//   {"age":16},
-//   {"age":16},
-//   {"age":16},
-//   {"age":16},
-// ]
-
 const fs = require('fs');
 
-
-
-function writeFileOn(date) {
-  fs.readFile('dates.txt','utf-8',(err,allData) => {
-    if (err) {
-      console.log(err);
-    }
-    // Set AM or PM
-    let hourTime = ' AM';
-    if (date[2].split(':')[0] > 12) {
-      hourTime = ' PM';
-    } else {
-      hourTime = ' AM';
-    }
-    // Set Data line
-    const data = `1 _ ${date[0]} _ ${date[1] + hourTime},`;
-    console.log(data.split('_'));
-    console.log(allData.split(','));
-
-    // Check If Booked Before
-    let splitedData = allData.split(',');
-    splitedData.map(myData => {
-      if (myData == data.replace(',','')) {
-        ifBooked = true;
-      } 
-    })
-    if (ifBooked) {
-      console.log('Booked Before !');
-    } else {
-      allData += data
-    };
-
-    // See Booked Times
-    console.log(allData.split(','));
-
-    // Add New Data
-    fs.writeFile('dates.txt',allData,(e)=> {
-      if (e) {
-        console.log(e);
-      }
-    })
-  })
-}
+// My Components
 
 const nodemailer = require('nodemailer');
 
@@ -67,24 +16,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 
-
-const code = `
-  <form action="/form" method="post">
-    <input type="email" required name="email" placeholder="write email">
-    <input type="text"  required name="name" placeholder="write name">
-    <input type="date" required name="date">
-    <input type="time" required name="date">
-    <textarea name="msg" placeholder="Write Your Msg"></textarea>
-    <button>Submit</button>
-  </form>
-`;
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-  res.send(code);
+  res.sendFile(__dirname + '/public/index.html');
+  // res.send(code);
 });
 
 app.post('/test',(req,res) => {
@@ -94,9 +33,8 @@ app.post('/test',(req,res) => {
 app.post('/form', (req, res) => {
   // Get Form Data
   const formData = req.body;
-
   // Write File And Save Dates
-  fs.readFile('dates.txt','utf-8',(err,allData) => {
+  fs.readFile('./public/files/dates.txt','utf-8',(err,allData) => {
     let date = req.body.date;
     let ifBooked = false;
     if (err) {
@@ -112,12 +50,6 @@ app.post('/form', (req, res) => {
 
     // Get Index
     let id;
-
-    // if (allData.split(',')[allData.split(',').length - 2].split('_')[0] != undefined) {
-    //   id = allData.split(',')[allData.split(',').length - 2].split('_')[0]
-    // } else {
-    //   id = 1;
-    // }
 
     // Check If Booked Before
     let splitedData = allData.split(',');
@@ -137,11 +69,14 @@ app.post('/form', (req, res) => {
     let msg;
     if (ifBooked) {
       // Set Msg
-      msg = `${formData.date} This Date Was Booked. The Dates Booked Is: <pre> ${allData.split(',').map(e=> {
-        return `<b>${e}</b><br>`
-      })} </pre>`
+      msg = `<h2>This Date Was Booked. The Dates Booked Is:</h2> <br> ${allData.split(',').map(e=> {
+        let msgData = e.split('_');
+        if (msgData[1] != undefined) {
+          return `<p style="font-size:1.3em;color:#222;">Date: ${msgData[1]}, On This Time: ${msgData[2]} </p> <br>`
+        }
+      })}`
 
-      console.log('Booked Before !');
+      res.send(msg);
     } else {
       // Complete Getting Index
       if (allData.split(',')[allData.split(',').length - 2] == undefined) {
@@ -149,15 +84,16 @@ app.post('/form', (req, res) => {
       } else {
         id = Number(allData.split(',')[allData.split(',').length - 2].split('_')[0]) + 1;
       }
-
-      // Set Msg
-      msg = `${formData.date} Is Your Booking Date, Don"t Forget`
       
+      res.send(`<h1 style="color:#edac66;">${formData.date}</h1> <p>Is Your Booking Date, Don"t Forget. <a href="https://mail.google.com/">Check Your Email</a></p>`);
+
       const mailOptions = {
         from: '"Anas Ramadan" <anasramadanking@gmail.com>',
         to: formData.email,
         subject: 'Test email To ' + formData.name,
-        html: `<h1 style="font-size:3em;color:red;">${msg}. Your booking Id Is ${id}</h1>`,
+        html: `<div style="direction: ltr;">
+        <h1 style="color:#edac66;">Hello ${formData.name}</h1>.<br> <p> Your booking Id Is ${id} </p> <br> <h3>Your Booking Date Is:</h3> <br> <p>${formData.date}</p>
+        </div>`,
       };
       sendEmail(mailOptions);
 
@@ -170,38 +106,14 @@ app.post('/form', (req, res) => {
 
 
     // Add New Data
-    fs.writeFile('dates.txt',allData,(e)=> {
+    fs.writeFile('./public/files/dates.txt',allData,(e)=> {
       if (e) {
         console.log(e);
       }
     })
   })
 
-  // fs.readFile('dates.txt', 'utf-8', (err, d) => {
-  //   if (err) {
-  //     console.log(err);
-  //     return;
-  //   }
-  //   const arr = d.split(',');
-  //   // Check If Time Pm Or Am
-  //   let time = 'AM';
-  //   console.log(arr[1].split(':')[0]);
-  //   if (arr[1].split(':')[0] >= 12) {
-  //     time = 'PM';
-  //   } else {
-  //     time = 'AM';
-  //   }
 
-  //   console.log(data.date,d);
-  //   if (data.date == d) {
-  //     console.log('Booked Before!');
-  //   } else {
-  //     writeFileOn(data.date)
-  //   }
-    
-  // });
-
-  res.status(200).send(`The Email Was Sent To ${formData.name}, Thank You!`);
 });
 
 
@@ -216,31 +128,18 @@ function sendEmail (mailOptions) {
 
 }
 
-function showError(err) {
-  return (err) => {
-    console.log(err);
-  }
-}
-
-// db.run(`INSERT INTO dates (name, date) VALUES ("a","s")`);
-
+// Get Users Comments
+app.post('/add-comment',(req,res) => {
+  const formData = req.body;
+  const allComents = fs.readFileSync('./public/files/comments.json','utf-8');
+  const paresedComments = JSON.parse(allComents);
+  paresedComments.push({"name":formData.name,"comment":formData.comment})
 
 
-app.get('/create/:id',(req,res) => {
-  res.send('Done')
-  
-
+  fs.writeFileSync('./public/files/comments.json',JSON.stringify(paresedComments));
+  res.status(200).send('The Comment Added. You Can See It In This <a href="/comments">Link</a>');
 })
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
 });
-    
-    //   // معالجة بيانات النموذج
-    // const formData = require('form-data');
-    // const request = require('request');
-    
-
-    // const email = formData.parse(request.body).email;
-    // const name = formData.parse(request.body).name;
-    // const msg = formData.parse(request.body).msg;
