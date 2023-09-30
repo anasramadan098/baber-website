@@ -132,13 +132,14 @@ section.about {
     font-weight: bold;
     margin-bottom: 10px;
 }
-section.about::before {
+section.bg::before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
+    background-color: rgba(0, 0, 0, .6);
     backdrop-filter: blur(4px);
     z-index: 100;
 }
@@ -162,20 +163,24 @@ section.about p {
     header {
         flex-direction: column;
         gap: 20px;
-        padding: 20px 80px;
+        padding: 20px 10px;
     }
     header img {
-        max-width: 70%;
+        max-width: 50%;
     }
-    section.about {
-        padding: 350px 20px 0px;
+    section.about,
+    section.bg {
+        padding: 350px 20px 30px !important;
         background-position: top;
     }
     header.scrolled img {
-        max-width: 50%;
+        max-width: 40%;
     }
     header button {
         margin: 0;
+    }
+    header .bookingBtn {
+        margin: auto;
     }
 }
 /* End Media Screens To These Sections */
@@ -325,13 +330,13 @@ footer .links ul {
     }
     footer .links ul{
         flex-direction: row;
-        gap: 30px;
+        gap: 10px;
     }
 }
 
 section.comments {
     padding: 300px 100px 50px;
-    background-color: #000;
+    background-image: url(imgs/bg-2.jpg);
     min-height: 100vh;
     color: var(--second-color);
 }
@@ -413,7 +418,7 @@ section.comments form button:hover {
 /* Start booking */
 section.booking {
     padding: 300px 100px 50px;
-    background-color: #222;
+    background-image: url(imgs/bg-4.jpg);
 }  
 section.booking form{
     display: flex;
@@ -453,7 +458,7 @@ section.booking form button:hover {
 }
 
 section.contact {
-    background-color: #222;
+    background-image: url(imgs/bg-3.jpg);
     color: var(--second-color);
     padding: 300px 100px;
 }
@@ -490,8 +495,40 @@ section.contact a:hover{
 section.contact a:hover::before {
     width: 100%;
 }
+section.bg {
+    background-size: cover;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 section.proTips {
+    background-image: url(imgs/bg-1.jpg);
     background-color: #222;
     padding: 300px 100px;
     color: var(--second-color);
+    line-height: 2;
 }
+.bg-div {
+    position: relative;
+    z-index: 100;
+}
+@media (max-width: 767px) {
+    header .links li a, footer .links ul li a {
+        font-size: 18px;
+    }
+    footer,
+    .copyright {
+        padding: 20px 10px;
+    }
+    .hours {
+        margin-bottom: 80px;
+    }
+    section.booking form input,
+    section.booking form textarea {
+        width: 100%;
+    }
+    section.comments .boxes {
+        flex-direction: column;
+        gap: 30px;
+    }
+} 

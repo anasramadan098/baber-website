@@ -9,7 +9,7 @@ langSelector.addEventListener('change',() => {
 })
 
 window.onscroll = function() {
-    if (scrollY >= 100) {
+    if (scrollY >= 80) {
         document.querySelector('header').classList.add('scrolled')
     } else {
         document.querySelector('header').classList.remove('scrolled')

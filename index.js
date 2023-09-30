@@ -90,10 +90,106 @@ app.post('/form', (req, res) => {
       const mailOptions = {
         from: '"Anas Ramadan" <anasramadanking@gmail.com>',
         to: formData.email,
-        subject: 'Test email To ' + formData.name,
-        html: `<div style="direction: ltr;">
-        <h1 style="color:#edac66;">Hello ${formData.name}</h1>.<br> <p> Your booking Id Is ${id} </p> <br> <h3>Your Booking Date Is:</h3> <br> <p>${formData.date}</p>
-        </div>`,
+        subject: 'Email From Barber Sam Website To ' + formData.name,
+        html: `<!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+            body {
+              color: #333;
+              direction:ltr;
+            }
+            * {
+              font-family: 'Bebas Neue', sans-serif;
+              text-align:left;
+            }
+            h1 {
+              color: #edac66;
+              font-size: 24px;
+              margin-bottom: 10px;
+            }
+        
+            h3 {
+              font-size: 18px;
+              margin-top: 20px;
+            }
+        
+            p {
+              font-size: 16px;
+              line-height: 1.5;
+              margin-bottom: 10px;
+            }
+        
+            span {
+              font-weight: bold;
+            }
+        
+            a {
+              color: #007bff;
+              text-decoration: none;
+            }
+        
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              background-color: #f9f9f9;
+            }
+        
+            .header {
+              text-align: center;
+              margin-bottom: 20px;
+            }
+        
+            .details {
+              margin-top: 30px;
+            }
+        
+            .location {
+              margin-top: 20px;
+            }
+        
+            .contact {
+              margin-top: 30px;
+            }
+        
+            .contact p {
+              margin: 5px 0;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Dear ${formData.name}</h1>
+              <p>We are delighted to confirm your upcoming appointment with BarberSam. Thank you for choosing our salon for your grooming needs.</p>
+            </div>
+            <div class="details">
+              <h3>Date: ${formData.date[0]}</h3>
+              <h3>Time: ${formData.date[1]}</h3>
+              <p><span>Barber:</span> BarberSam</p>
+            </div>
+            <div class="location">
+              <p>Location:</p>
+              <p>hilversum langestraat 55D</p>
+            </div>
+            <div class="message">
+              <p>We hope you come five minutes early. This will allow you some time to relax and enjoy a cup of coffee before your appointment. Our team strives to provide you with the best service and ensure you have a comfortable experience.</p>
+            </div>
+            <div class="contact">
+              <p>If you need to make any changes to your appointment or have any questions, please don't hesitate to contact us at <a href="tel:0686266621">0686266621</a>.</p>
+              <p>Warm regards,</p>
+              <p>Barber Sam</p>
+              <p><a href="tel:0686266621">0686266621</a></p>
+              <p>barbersam.sam@gmail.com</p>
+              <p>barbersam.net</p>
+            </div>
+          </div>
+        </body>
+        </html>`,
       };
       sendEmail(mailOptions);
 
