@@ -42,7 +42,7 @@ app.post('/form', (req, res) => {
     }
     // Set AM or PM
     let hourTime = ' AM';
-    if (date[1].split(':')[0] > 12) {
+    if (date[1].split(':')[0] >= 12) {
       hourTime = ' PM';
     } else {
       hourTime = ' AM';
@@ -56,7 +56,7 @@ app.post('/form', (req, res) => {
     splitedData.map(myData => {
       // Get Data That Equal
       let newDate;
-      if (date[1].split(':')[0] > 12) {
+      if (date[1].split(':')[0] >= 12) {
         newDate = date.join(' , ') + ' PM';
       } else {
         newDate = date.join(' , ') + ' AM'
@@ -85,7 +85,89 @@ app.post('/form', (req, res) => {
         id = Number(allData.split(',')[allData.split(',').length - 2].split('_')[0]) + 1;
       }
       
+
+
+      // Write On Booking.json File The Newest Date  day,avalibleDates
+      let bookingJsonFileData = JSON.parse(fs.readFileSync('./public/files/booking.json','utf-8'));
+      // Get The Previous Dates
+      if (bookingJsonFileData.length != 0) {
+        bookingJsonFileData.map(obj=> {
+          if (obj.day == date[0]) {
+            // Remove It
+            bookingJsonFileData =  bookingJsonFileData.slice(bookingJsonFileData.indexOf(obj) + 1)
+            let writeData = [];
+            obj.avalibleDates.map(time => {
+              if (time != date[1]) {
+                writeData.push(time);
+              }
+            })
+            bookingJsonFileData.push({"day":date[0], "avalibleDates": writeData})
+          } else {
+            // Add An Date
+        const allTimes = [
+          '09:30',
+          '10:00',
+          '10:30',
+          '11:00',
+          '11:30',
+          '12:00',
+          '12:30',
+          '13:00',
+          '13:30',
+          '14:00',
+          '14:30',
+          '15:00',
+          '15:30',
+          '16:00',
+          '16:30',
+          '17:00',
+          '17:30',
+        ]
+        let filterdTimes = [];
+        allTimes.map(time => {
+          if (time != date[1]) {
+            filterdTimes.push(time);
+          }
+        })
+        bookingJsonFileData.push({"day":date[0], "avalibleDates": filterdTimes})
+          }
+        })      
+      } else {
+        // Add An Date
+        const allTimes = [
+          '09:30',
+          '10:00',
+          '10:30',
+          '11:00',
+          '11:30',
+          '12:00',
+          '12:30',
+          '13:00',
+          '13:30',
+          '14:00',
+          '14:30',
+          '15:00',
+          '15:30',
+          '16:00',
+          '16:30',
+          '17:00',
+          '17:30',
+        ]
+        let filterdTimes = [];
+        allTimes.map(time => {
+          if (time != date[1]) {
+            filterdTimes.push(time);
+          }
+        })
+        bookingJsonFileData.push({"day":date[0], "avalibleDates": filterdTimes})
+        // Write On The File The New Data
+      }
+
+      // Write On The File The New Data
+      fs.writeFileSync('./public/files/booking.json',JSON.stringify(bookingJsonFileData))
+
       res.send(`<h1 style="color:#edac66;">${formData.date}</h1> <p>Is Your Booking Date, Don"t Forget. <a href="https://mail.google.com/">Check Your Email</a></p>`);
+
 
       const mailOptions = {
         from: '"Anas Ramadan" <anasramadanking@gmail.com>',
@@ -169,7 +251,7 @@ app.post('/form', (req, res) => {
             </div>
             <div class="details">
               <h3>Date: ${formData.date[0]}</h3>
-              <h3>Time: ${formData.date[1]}</h3>
+              <h3>Time: ${formData.date[1] + hourTime}</h3>
               <p><span>Barber:</span> BarberSam</p>
             </div>
             <div class="location">
@@ -201,6 +283,7 @@ app.post('/form', (req, res) => {
 
 
 
+
     // Add New Data
     fs.writeFile('./public/files/dates.txt',allData,(e)=> {
       if (e) {
@@ -213,6 +296,7 @@ app.post('/form', (req, res) => {
 });
 
 
+          
 
 function sendEmail (mailOptions) {
 

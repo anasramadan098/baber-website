@@ -428,6 +428,7 @@ section.booking form{
     gap: 30px;
 }
 section.booking form input,
+section.booking form select,
 section.booking form textarea {
     padding: 20px;
     border-radius: 6px;
@@ -524,6 +525,7 @@ section.proTips {
         margin-bottom: 80px;
     }
     section.booking form input,
+    section.booking form select,
     section.booking form textarea {
         width: 100%;
     }
