@@ -1,15 +1,41 @@
 const selectInput = document.querySelector('select.selectInput');
 const dateInput = document.querySelector('input[type="date"]');
 const lastSelectData = selectInput.innerHTML;
+const servicesInput = document.querySelector('.servicesInput');
 
-
+const services = ['Haircut & blowdry', 'Buzz cut', 'Beard trim', 'Haar wassen en föhnen', 'Clean shave', 'Haircut & beard trim & blowdry\n                ', 'Head shave & beard trim', 'Haircut & clean shave', 'Buzz cut & beard']
+services.map(service=> {
+    let option = `<option value="${service}">${service}</option>`;
+    return servicesInput.innerHTML += option;
+})
 
 fetch('../files/booking.json').then(res=> res.json()).then(data=> {
     dateInput.addEventListener('input',()=> {
+        const allTimes = [
+            '09:30',
+            '10:00',
+            '10:30',
+            '11:00',
+            '11:30',
+            '12:00',
+            '12:30',
+            '13:00',
+            '13:30',
+            '14:00',
+            '14:30',
+            '15:00',
+            '15:30',
+            '16:00',
+            '16:30',
+            '17:00',
+            '17:30',
+        ]
+        const inputValue = dateInput.value
+
         let isFound = false
 
         data.forEach(myDate => {
-            if (dateInput.value == myDate.day) {
+            if (inputValue == myDate.day) {
                 isFound = true;
                 selectInput.innerHTML = ' ';
                 // Create Uniqe Option
@@ -20,21 +46,17 @@ fetch('../files/booking.json').then(res=> res.json()).then(data=> {
                 uniqeOption.disabled = true;
                 selectInput.appendChild(uniqeOption);
                 // End Create
-                myDate.avalibleDates.map(value => {
-                    console.log(value);
-                    const option = document.createElement('option');
-                    // Filter The TEXT
-                    if (value.split(':')[0] > 12) {
-                        // This Is PM
-                        option.innerHTML = '0' + Number(value.split(':')[0] - 12) + `:${value.split(':')[1]} PM`;
-                    } else if (value.split(':')[0] == 12) {
-                        option.innerHTML = Number(value.split(':')[0]) + `:${value.split(':')[1]} PM`;
+                // Filter Dates
 
-                    } else {
-                        option.innerHTML = value + ' AM';
-                    }
-                    option.value = value;
-                    selectInput.appendChild(option);
+                const filteredTimes = allTimes.filter(time => !myDate.bookedDates.includes(time));
+
+                console.log(filteredTimes);
+
+                filteredTimes.map(value => {
+                        const option = document.createElement('option');
+                        option.innerHTML = value;
+                        option.value = value;
+                        selectInput.appendChild(option);
                 })
             }
         });
@@ -42,6 +64,9 @@ fetch('../files/booking.json').then(res=> res.json()).then(data=> {
 
         if (!isFound) {
             selectInput.innerHTML = lastSelectData;
+        }
+        if (new Date(inputValue).toUTCString().split(',')[0] == 'Sun') {
+            selectInput.innerHTML = '<option selected disabled value="">Holiday Time</option>'
         }
     })
 

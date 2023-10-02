@@ -1,4 +1,5 @@
 const fs = require('fs');
+const cheerio = require('cheerio');
 
 // My Components
 
@@ -15,7 +16,6 @@ const transporter = nodemailer.createTransport({
 const express = require('express');
 const bodyParser = require('body-parser');
 
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -26,9 +26,6 @@ app.get('/', (req, res) => {
   // res.send(code);
 });
 
-app.post('/test',(req,res) => {
-  res.send('Tested');
-} )
 
 app.post('/form', (req, res) => {
   // Get Form Data
@@ -40,13 +37,6 @@ app.post('/form', (req, res) => {
     if (err) {
       console.log(err);
     }
-    // Set AM or PM
-    let hourTime = ' AM';
-    if (date[1].split(':')[0] >= 12) {
-      hourTime = ' PM';
-    } else {
-      hourTime = ' AM';
-    }
 
     // Get Index
     let id;
@@ -55,13 +45,11 @@ app.post('/form', (req, res) => {
     let splitedData = allData.split(',');
     splitedData.map(myData => {
       // Get Data That Equal
-      let newDate;
-      if (date[1].split(':')[0] >= 12) {
-        newDate = date.join(' , ') + ' PM';
-      } else {
-        newDate = date.join(' , ') + ' AM'
-      }
-      if (' ' + newDate == myData.trim().split('_').slice(1).join()) {
+      let newDate = date;
+      // Filter
+      let filtered = myData.trim().split('_').slice(1).map(e=> e.trim()).join();
+      if (newDate == filtered) {
+        console.log('BookED!');
         ifBooked = true;
       } 
     })
@@ -95,14 +83,16 @@ app.post('/form', (req, res) => {
           if (obj.day == date[0]) {
             // Remove It
             bookingJsonFileData =  bookingJsonFileData.slice(bookingJsonFileData.indexOf(obj) + 1)
-            let writeData = [];
-            obj.avalibleDates.map(time => {
+            let writeData = [...obj.bookedDates];
+            obj.bookedDates.map(time => {
               if (time != date[1]) {
-                writeData.push(time);
+                writeData.push(date[1]);
               }
             })
-            bookingJsonFileData.push({"day":date[0], "avalibleDates": writeData})
+            bookingJsonFileData.push({"day":date[0], "bookedDates": writeData})
           } else {
+            // New Book
+
             // Add An Date
         const allTimes = [
           '09:30',
@@ -125,11 +115,11 @@ app.post('/form', (req, res) => {
         ]
         let filterdTimes = [];
         allTimes.map(time => {
-          if (time != date[1]) {
+          if (time == date[1]) {
             filterdTimes.push(time);
           }
         })
-        bookingJsonFileData.push({"day":date[0], "avalibleDates": filterdTimes})
+        bookingJsonFileData.push({"day":date[0], "bookedDates": filterdTimes})
           }
         })      
       } else {
@@ -155,11 +145,11 @@ app.post('/form', (req, res) => {
         ]
         let filterdTimes = [];
         allTimes.map(time => {
-          if (time != date[1]) {
+          if (time == date[1]) {
             filterdTimes.push(time);
           }
         })
-        bookingJsonFileData.push({"day":date[0], "avalibleDates": filterdTimes})
+        bookingJsonFileData.push({"day":date[0], "bookedDates": filterdTimes})
         // Write On The File The New Data
       }
 
@@ -168,6 +158,27 @@ app.post('/form', (req, res) => {
 
       res.send(`<h1 style="color:#edac66;">${formData.date}</h1> <p>Is Your Booking Date, Don"t Forget. <a href="https://mail.google.com/">Check Your Email</a></p>`);
 
+      // Create Admin Page
+      const prevDataOfAdminPage = fs.readFileSync('./public/admin/index.html','utf-8');
+      fs.writeFileSync('./public/admin/index.html',`
+        ${prevDataOfAdminPage}
+        <form action="/delete" id=${id} method="post">
+        <p>ID:</p>
+        <input type="text" name="id" value=${id} />
+        <p>Name:</p>
+        <input type="text" name="name" value=${formData.name} />
+        <p>Email:</p>
+        <input type="text" name="email" value=${formData.email} />
+        <p>Phone:</p>
+        <input type="text" name="tel" value=${formData.Tel} />
+        <p>Service:</p>
+        <input type="text" name="services" value=${formData.services} />
+        <p>Date:</p>
+        <input type="text" name="date" value=${formData.date} />
+        <button data-href='/delete'>Delete</button>
+        </form>
+      `)
+      
 
       const mailOptions = {
         from: '"Anas Ramadan" <anasramadanking@gmail.com>',
@@ -251,7 +262,7 @@ app.post('/form', (req, res) => {
             </div>
             <div class="details">
               <h3>Date: ${formData.date[0]}</h3>
-              <h3>Time: ${formData.date[1] + hourTime}</h3>
+              <h3>Time: ${formData.date[1]}</h3>
               <p><span>Barber:</span> BarberSam</p>
             </div>
             <div class="location">
@@ -276,7 +287,7 @@ app.post('/form', (req, res) => {
       sendEmail(mailOptions);
 
       // Set Data line
-      const data = `${id} _ ${date[0]} _ ${date[1] + hourTime},`;
+      const data = `${id} _ ${date[0]} _ ${date[1]},`;
 
       allData += data
     };
@@ -296,7 +307,30 @@ app.post('/form', (req, res) => {
 });
 
 
-          
+app.post('/delete',(req,res) => {
+  // Dates File
+  let allData = fs.readFileSync('./public/files/dates.txt','utf-8');
+  let splitedData = allData.split(',');
+
+  const filteredArray = splitedData.filter(item => item !== `${req.body.id} _ ${req.body.date.split(',')[0]} _ ${req.body.date.split(',')[1]}`);
+
+  fs.writeFileSync('./public/files/dates.txt',filteredArray.join(','));
+
+  // Read the HTML file
+  let htmlData = fs.readFileSync('./public/admin/index.html', 'utf8');
+
+  // Load the HTML into cheerio
+  const $ = cheerio.load(htmlData);
+
+  // Select the second form using its ID
+  const secondForm = $(`#${req.body.id}`);
+
+  // Remove the form
+  secondForm.remove()
+
+  fs.writeFileSync('./public/admin/index.html',$.html())
+  res.status(200).redirect('/admin');
+})
 
 function sendEmail (mailOptions) {
 
