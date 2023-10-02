@@ -164,17 +164,17 @@ app.post('/form', (req, res) => {
         ${prevDataOfAdminPage}
         <form action="/delete" id=${id} method="post">
         <p>ID:</p>
-        <input type="text" name="id" value=${id} />
+        <input readonly type="text" name="id" value=${id} />
         <p>Name:</p>
-        <input type="text" name="name" value=${formData.name} />
+        <input readonly type="text" name="name" value=${formData.name} />
         <p>Email:</p>
-        <input type="text" name="email" value=${formData.email} />
+        <input readonly type="text" name="email" value=${formData.email} />
         <p>Phone:</p>
-        <input type="text" name="tel" value=${formData.Tel} />
+        <input readonly type="text" name="tel" value=${formData.Tel} />
         <p>Service:</p>
-        <input type="text" name="services" value=${formData.services} />
+        <input readonly type="text" name="services" value=${formData.services} />
         <p>Date:</p>
-        <input type="text" name="date" value=${formData.date} />
+        <input readonly type="text" name="date" value=${formData.date} />
         <button data-href='/delete'>Delete</button>
         </form>
       `)
