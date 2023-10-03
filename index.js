@@ -178,7 +178,7 @@ app.post('/form', (req, res) => {
       <button data-href='/delete'>Delete</button>
       </form>`);
       console.log($);
-      $('body').append("<script src='search.js'></script>");
+      $('html').append("<script src='search.js'></script>");
       fs.writeFileSync('./public/admin/index.html',`${$.html()}`)
       
 
