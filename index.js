@@ -160,24 +160,26 @@ app.post('/form', (req, res) => {
 
       // Create Admin Page
       const prevDataOfAdminPage = fs.readFileSync('./public/admin/index.html','utf-8');
-      fs.writeFileSync('./public/admin/index.html',`
-        ${prevDataOfAdminPage}
-        <form action="/delete" id=${id} method="post">
-        <p>ID:</p>
-        <input readonly type="text" name="id" value=${id} />
-        <p>Name:</p>
-        <input readonly type="text" name="name" value=${formData.name} />
-        <p>Email:</p>
-        <input readonly type="text" name="email" value=${formData.email} />
-        <p>Phone:</p>
-        <input readonly type="text" name="tel" value=${formData.Tel} />
-        <p>Service:</p>
-        <input readonly type="text" name="services" value=${formData.services} />
-        <p>Date:</p>
-        <input readonly type="text" name="date" value=${formData.date} />
-        <button data-href='/delete'>Delete</button>
-        </form>
-      `)
+      // Load the HTML into cheerio
+      const $ = cheerio.load(prevDataOfAdminPage);
+      $('body').append(`<form action="/delete" id=${id} method="post">
+      <p>ID:</p>
+      <input type="text" name="id" value=${id} />
+      <p>Name:</p>
+      <input type="text" name="name" value=${formData.name} />
+      <p>Email:</p>
+      <input type="text" name="email" value=${formData.email} />
+      <p>Phone:</p>
+      <input type="text" name="tel" value=${formData.Tel} />
+      <p>Service:</p>
+      <input type="text" name="service" value=${formData.services} />
+      <p>Date:</p>
+      <input type="text" name="date" value=${formData.date} />
+      <button data-href='/delete'>Delete</button>
+      </form>`);
+      console.log($);
+      $('body').append("<script src='search.js'></script>");
+      fs.writeFileSync('./public/admin/index.html',`${$.html()}`)
       
 
       const mailOptions = {
@@ -314,22 +316,49 @@ app.post('/delete',(req,res) => {
 
   const filteredArray = splitedData.filter(item => item !== `${req.body.id} _ ${req.body.date.split(',')[0]} _ ${req.body.date.split(',')[1]}`);
 
+  // Write On Dates.Txt File
   fs.writeFileSync('./public/files/dates.txt',filteredArray.join(','));
 
+  // Write On Admin Page 
   // Read the HTML file
   let htmlData = fs.readFileSync('./public/admin/index.html', 'utf8');
 
   // Load the HTML into cheerio
   const $ = cheerio.load(htmlData);
-
+  $('body').prepend(`<input type="text" id="search" placeholder="Search ...">
+  <select>
+          <option value="ID">ID</option>
+          <option value="Name">Name</option>
+          <option value="Email">Email</option>
+          <option value="Phone">Phone</option>
+          <option value="Service">Service</option>
+          <option value="Date">Date</option>
+  </select>`)
+  $('html').append("<script src='search.js'></script>");
+  console.log($.html())
   // Select the second form using its ID
   const secondForm = $(`#${req.body.id}`);
 
   // Remove the form
   secondForm.remove()
 
-  fs.writeFileSync('./public/admin/index.html',$.html())
+  fs.writeFileSync('./public/admin/index.html',$.html());
+  // Write On Booking.JSON File
+  let bookingJsonFileData = JSON.parse(fs.readFileSync('./public/files/booking.json','utf-8'));
+  let bookedDates;
+  bookingJsonFileData.map(date=> {
+    if (date.day == req.body.date.split(',')[0]) {
+      bookedDates = date.bookedDates.filter(bookedDate => bookedDate != req.body.date.split(',')[1]);
+      date['bookedDates']  = bookedDates
+    }
+  })
+  // Filter The Dates
+  let filteredBookedDates = bookingJsonFileData.filter(bookDate => bookDate.day !== `${req.body.date.split(',')[0]}`)
+  filteredBookedDates.push({"day":`${req.body.date.split(',')[0]}`, "bookedDates": [...bookedDates]})
+  fs.writeFileSync('./public/files/booking.json',JSON.stringify(filteredBookedDates))
+
   res.status(200).redirect('/admin');
+  // res.status(200).redirect('/admin');
 })
 
 function sendEmail (mailOptions) {
