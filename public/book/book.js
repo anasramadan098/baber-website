@@ -62,7 +62,7 @@ fetch('../files/booking.json').then(res=> res.json()).then(data=> {
                     const option = document.createElement('option');
                     option.innerHTML = value;
                     option.value = value;
-                    if (value = '13:00') {
+                    if (value == '13:00') {
                         option.innerHTML = '13:00'
                     }
                     // Get the time in milliseconds from the option's value
@@ -72,7 +72,7 @@ fetch('../files/booking.json').then(res=> res.json()).then(data=> {
                     let optionDate = new Date().setHours(dateData[0],dateData[1]);
                     // Get Momnent 
                     let moment = new Date();
-                    let test = moment.setHours(moment.getHours() - 12, moment.getMinutes())
+                    let test = moment.setHours(moment.getHours(), moment.getMinutes())
                     if (test <= optionDate) {
                         selectInput.appendChild(option);
                     }
