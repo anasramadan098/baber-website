@@ -62,6 +62,9 @@ fetch('../files/booking.json').then(res=> res.json()).then(data=> {
                     const option = document.createElement('option');
                     option.innerHTML = value;
                     option.value = value;
+                    if (value = '13:00') {
+                        option.innerHTML = '13:00'
+                    }
                     // Get the time in milliseconds from the option's value
                     // Split The Data
                     let dateData = option.innerHTML.split(':');
