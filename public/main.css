@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     /* font-family: 'Raleway', sans-serif; */
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bebas Neue', 'Cairo';
 }
 :root {
-    --second-color:#edac66;
+    --second-color:#fbdfbc;
 } 
 a {
     text-decoration: none;
@@ -201,7 +202,7 @@ section.gallery div {
     align-items: center;
 }
 section.gallery img{
-    max-width: calc((100% - 10px) / 4);
+    max-width: calc((100% - 10px) / 2);
     cursor: pointer;
     transition: .3s;
 }
@@ -226,11 +227,11 @@ section.services .boxes {
     gap: 10px;
 }
 section.services .box {
-    flex-basis: calc(100% / 3 - 10px);
-    background: #fff;
+    flex-basis: calc(100% / 2 - 10px);
     padding: 40px 15px;
     position: relative;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgb(255, 255, 255);
     border-radius: 8px;
     transition: 0.3s ease;
 }
@@ -239,15 +240,14 @@ section.services .box:hover {
 }
 section.services .box .title {
     font-size: 1.8em;
-    max-width: 200px;
 }
 section.services .box .price {
     position: absolute;
     right: 10px;
     top: 10px;
-    opacity: .3;
+
     font-weight: bold;
-    font-size: 4em;
+    font-size: 5em;
 }
 section.services .box .book-btn {
     margin-top: 10px;
@@ -416,9 +416,12 @@ section.comments form button:hover {
     color: #fff;
 }
 /* Start booking */
+section {
+    background-attachment: fixed;
+}
 section.booking {
     padding: 300px 100px 50px;
-    background-image: url(imgs/bg-4.jpg);
+    background-image: url(imgs/about.jpeg);
 }  
 section.booking form{
     display: flex;
@@ -534,3 +537,20 @@ section.proTips {
         gap: 30px;
     }
 } 
+
+section.comments .see-more {
+    padding: 10px 50px;
+    margin-top: 90px;
+    background: var(--second-color);
+    border: none;
+    border-radius: 3px;
+    color: #000;
+    display: block;
+    width: fit-content;
+    cursor: pointer;
+    transition: .3s;
+}
+section.comments .see-more:hover {
+    border-radius: 10px;
+    color: #fff;
+}

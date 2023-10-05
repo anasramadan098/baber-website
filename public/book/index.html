@@ -21,16 +21,13 @@
             </a>
             <ul class="links">
                 <li>
-                    <a href="../index.html">About Us</a>
+                    <a href="../index.html">Home</a>
                   </li>
                   <li>
                     <a href="https://sam.store">Store</a>
                   </li>
                   <li>
-                    <a href="../comments/index.html">Testimonials</a>
-                  </li>
-                  <li>
-                    <a href="../contact/index.html">Contact Us</a>
+                    <a href="../contact/index.html">Find Us</a>
                   </li>
                   <li>
                     <a href="../pro-tips/index.html">Pro Tips</a>
@@ -42,11 +39,13 @@
           <!-- Start Booking -->
     <section class="booking bg">
         <form class="bg-div" action="/form" method="post">
-            <input type="email" required name="email" placeholder="write email">
             <input type="text"  required name="name" placeholder="write name">
             <input type="tel"  required name="Tel" placeholder="write Tel">
-            <input type="date" required name="date">
-            <textarea name="comment" placeholder="Write Your Note (Option)"></textarea>
+            <input type="email" required name="email" placeholder="write email">
+            <select name="services" class="servicesInput" required>
+              <option value="" disabled selected >Select Service</option>
+            </select>
+            <input type="date"   required name="date">
             <select name="date" class="selectInput" required>
               <option value="" disabled selected>Select Time</option>
               <option value="09:30">09:30</option>
@@ -67,9 +66,7 @@
               <option value="17:00">17:00</option>
               <option value="17:30">17:30</option>
             </select>
-            <select name="services" class="servicesInput" required>
-              <option value="" disabled selected >Select Service</option>
-            </select>
+            <textarea name="comment" placeholder="Write Your Note (Option)"></textarea>
             <button>Submit</button>
         </form>
     </section>
@@ -82,16 +79,13 @@
             <div class="links">
                 <ul>
                     <li>
-                        <a href="../index.html">About Us</a>
+                        <a href="../index.html">Home</a>
                       </li>
                       <li>
                         <a href="https://sam.store">Store</a>
                       </li>
                       <li>
-                        <a href="../comments/index.html">Testimonials</a>
-                      </li>
-                      <li>
-                        <a href="../contact/index.html">Contact Us</a>
+                        <a href="../contact/index.html">Find Us</a>
                       </li>
                       <li>
                         <a href="../pro-tips/index.html">Pro Tips</a>

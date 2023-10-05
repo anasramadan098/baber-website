@@ -1,73 +1,161 @@
-<!DOCTYPE html><html><head>
-                <style>
-                        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+<!DOCTYPE html><html lang="en"><head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Page</title>
+        <style>
+                @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+                
+                select {
+                        position: absolute;
+                        top: 0.1%;
+                        right: 0%;
+                        padding: 10px 30px;
+                        border-radius: 6px;
+                        border: 1px solid #333;
+                }
+
+                input#search {
+                        display: block;
+                        width: 80%;
+                        position: absolute;
+                        top: 0%;
+                        left: 0%;
+                }
+                body {
+                        position: relative;
+                        background-color: #eee;
+                        font-family: 'Bebas Neue', sans-serif;
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 10px;
+                        justify-content: space-between;
+                        padding-top: 100px;
+                }
+                p {
+                        font-size: 2em !important;
+                }
+                input {
                         
-                        select {
-                                position: absolute;
-                                top: 3%;
-                                right: 3%;
-                                padding: 10px 30px;
-                                border-radius: 6px;
-                                border: 1px solid #333;
-                        }
-        
-                        input#search {
-                                display: block;
-                                width: 100%;
-                                position: absolute;
-                                top: 2%;
-                                left: 0%;
-                        }
-                        body {
-                                position: relative;
-                                background-color: #eee;
-                                font-family: 'Bebas Neue', sans-serif;
-                                display: flex;
-                                align-items: center;
-                                flex-wrap: wrap;
-                                gap: 10px;
-                                justify-content: space-between;
-                                padding-top: 100px;
-                        }
-                        p {
-                                font-size: 2em !important;
-                        }
-                        input {
-                                
-                                padding: 25px;
-                                border-radius: 6px;
-                                border: 1px solid #333;
-                        }
-                        form {
-                                margin-top: 50px;
-                                padding: 20px;
-                                background-color: #fff;
-                                width: fit-content;
-                                border-radius: 6px;
-                        }
-                        button {
-                                display: block;
-                                margin: 30px 0 0;
-                                padding: 10px 30px;
-                                background: #fff;
-                                border: 1px solid #333;
-                                border-radius: 6px;
-                                cursor: pointer;
-                                transition: .3s;
-                        }
-                        button:hover {
-                                transform: translateX(10px);
-                        }
-                </style>
-        </head>
-        <body>
-                <input type="text" id="search" placeholder="Search ...">
-                <select>
-                <option value="ID">ID</option>
-                <option value="Name">Name</option>
-                <option value="Email">Email</option>
-                <option value="Phone">Phone</option>
-                <option value="Service">Service</option>
-                <option value="Date">Date</option>
-        </select>
-       <script src="search.js"></script></body></html>
+                        padding: 25px;
+                        border-radius: 6px;
+                        border: 1px solid #333;
+                }
+                form {
+                        margin-top: 50px;
+                        padding: 20px;
+                        background-color: #fff;
+                        width: fit-content;
+                        border-radius: 6px;
+                }
+                button {
+                        display: block;
+                        margin: 30px 0 0;
+                        padding: 10px 30px;
+                        background: #fff;
+                        border: 1px solid #333;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        transition: .3s;
+                }
+                button:hover {
+                        transform: translateX(10px);
+                }
+        </style>
+</head>
+<body>
+        <input type="text" id="search" placeholder="Search ...">
+        <select>
+        <option value="ID">ID</option>
+        <option value="Name">Name</option>
+        <option value="Email">Email</option>
+        <option value="tel">Phone</option>
+        <option value="Service">Service</option>
+        <option value="Date">Date</option>
+        </select>       
+<form action="/delete" id="7" method="post">
+      <p>ID:</p>
+      <input type="text" name="id" value="7">
+      <p>Name:</p>
+      <input type="text" name="name" value="Anas">
+      <p>Email:</p>
+      <input type="text" name="email" value="anasramadanking@gmail.com">
+      <p>Phone:</p>
+      <input type="text" name="tel" value="011">
+      <p>Service:</p>
+      <input type="text" name="service" value="Haircut" &="" blowdry="">
+      <p>Date:</p>
+      <input type="text" name="date" value="2023-10-11,15:00">
+      <button data-href="/delete">Delete</button>
+      </form><form action="/delete" id="8" method="post">
+      <p>ID:</p>
+      <input type="text" name="id" value="8">
+      <p>Name:</p>
+      <input type="text" name="name" value="Anas">
+      <p>Email:</p>
+      <input type="text" name="email" value="anasramadanking@gmail.com">
+      <p>Phone:</p>
+      <input type="text" name="tel" value="011">
+      <p>Service:</p>
+      <input type="text" name="service" value="Haircut" &="" blowdry="">
+      <p>Date:</p>
+      <input type="text" name="date" value="2023-10-11,15:30">
+      <button data-href="/delete">Delete</button>
+      </form><form action="/delete" id="9" method="post">
+      <p>ID:</p>
+      <input type="text" name="id" value="9">
+      <p>Name:</p>
+      <input type="text" name="name" value="Anas">
+      <p>Email:</p>
+      <input type="text" name="email" value="anasramadanking@gmail.com">
+      <p>Phone:</p>
+      <input type="text" name="tel" value="011">
+      <p>Service:</p>
+      <input type="text" name="service" value="Haircut" &="" blowdry="">
+      <p>Date:</p>
+      <input type="text" name="date" value="2023-10-11,16:00">
+      <button data-href="/delete">Delete</button>
+      </form><form action="/delete" id="10" method="post">
+      <p>ID:</p>
+      <input type="text" name="id" value="10">
+      <p>Name:</p>
+      <input type="text" name="name" value="Anas">
+      <p>Email:</p>
+      <input type="text" name="email" value="anasramadanking@gmail.com">
+      <p>Phone:</p>
+      <input type="text" name="tel" value="011">
+      <p>Service:</p>
+      <input type="text" name="service" value="Haircut" &="" blowdry="">
+      <p>Date:</p>
+      <input type="text" name="date" value="2023-10-11,16:30">
+      <button data-href="/delete">Delete</button>
+      </form><form action="/delete" id="11" method="post">
+      <p>ID:</p>
+      <input type="text" name="id" value="11">
+      <p>Name:</p>
+      <input type="text" name="name" value="Anas">
+      <p>Email:</p>
+      <input type="text" name="email" value="anasramadanking@gmail.com">
+      <p>Phone:</p>
+      <input type="text" name="tel" value="011">
+      <p>Service:</p>
+      <input type="text" name="service" value="Haircut" &="" blowdry="">
+      <p>Date:</p>
+      <input type="text" name="date" value="2023-10-11,17:00">
+      <button data-href="/delete">Delete</button>
+      </form><form action="/delete" id="12" method="post">
+      <p>ID:</p>
+      <input type="text" name="id" value="12">
+      <p>Name:</p>
+      <input type="text" name="name" value="Anas">
+      <p>Email:</p>
+      <input type="text" name="email" value="anasramadanking@gmail.com">
+      <p>Phone:</p>
+      <input type="text" name="tel" value="011">
+      <p>Service:</p>
+      <input type="text" name="service" value="Haircut" &="" blowdry="">
+      <p>Date:</p>
+      <input type="text" name="date" value="2023-10-11,17:30">
+      <button data-href="/delete">Delete</button>
+      </form><script src="search.js"></script></body></html>

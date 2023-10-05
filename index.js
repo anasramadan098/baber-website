@@ -49,7 +49,6 @@ app.post('/form', (req, res) => {
       // Filter
       let filtered = myData.trim().split('_').slice(1).map(e=> e.trim()).join();
       if (newDate == filtered) {
-        console.log('BookED!');
         ifBooked = true;
       } 
     })
@@ -74,7 +73,6 @@ app.post('/form', (req, res) => {
       }
       
 
-
       // Write On Booking.json File The Newest Date  day,avalibleDates
       let bookingJsonFileData = JSON.parse(fs.readFileSync('./public/files/booking.json','utf-8'));
       // Get The Previous Dates
@@ -83,73 +81,21 @@ app.post('/form', (req, res) => {
           if (obj.day == date[0]) {
             // Remove It
             bookingJsonFileData =  bookingJsonFileData.slice(bookingJsonFileData.indexOf(obj) + 1)
-            let writeData = [...obj.bookedDates];
+            let writeData = obj.bookedDates;
             obj.bookedDates.map(time => {
-              if (time != date[1]) {
-                writeData.push(date[1]);
+              if (!obj.bookedDates.includes(date[1])) {
+                  writeData.push(date[1]);
               }
             })
             bookingJsonFileData.push({"day":date[0], "bookedDates": writeData})
           } else {
-            // New Book
 
-            // Add An Date
-        const allTimes = [
-          '09:30',
-          '10:00',
-          '10:30',
-          '11:00',
-          '11:30',
-          '12:00',
-          '12:30',
-          '13:00',
-          '13:30',
-          '14:00',
-          '14:30',
-          '15:00',
-          '15:30',
-          '16:00',
-          '16:30',
-          '17:00',
-          '17:30',
-        ]
-        let filterdTimes = [];
-        allTimes.map(time => {
-          if (time == date[1]) {
-            filterdTimes.push(time);
-          }
-        })
-        bookingJsonFileData.push({"day":date[0], "bookedDates": filterdTimes})
+            bookingJsonFileData.push({"day":date[0], "bookedDates": [date[1]]})
+
           }
         })      
       } else {
-        // Add An Date
-        const allTimes = [
-          '09:30',
-          '10:00',
-          '10:30',
-          '11:00',
-          '11:30',
-          '12:00',
-          '12:30',
-          '13:00',
-          '13:30',
-          '14:00',
-          '14:30',
-          '15:00',
-          '15:30',
-          '16:00',
-          '16:30',
-          '17:00',
-          '17:30',
-        ]
-        let filterdTimes = [];
-        allTimes.map(time => {
-          if (time == date[1]) {
-            filterdTimes.push(time);
-          }
-        })
-        bookingJsonFileData.push({"day":date[0], "bookedDates": filterdTimes})
+        bookingJsonFileData.push({"day":date[0], "bookedDates": [date[1]]})
         // Write On The File The New Data
       }
 
@@ -177,8 +123,11 @@ app.post('/form', (req, res) => {
       <input type="text" name="date" value=${formData.date} />
       <button data-href='/delete'>Delete</button>
       </form>`);
-      console.log($);
-      $('html').append("<script src='search.js'></script>");
+      if ($('script')) {
+        $('body script').remove();
+      } 
+      $('body').append('<script src="search.js"></script>')
+
       fs.writeFileSync('./public/admin/index.html',`${$.html()}`)
       
 
@@ -334,6 +283,7 @@ app.post('/delete',(req,res) => {
           <option value="Service">Service</option>
           <option value="Date">Date</option>
   </select>`)
+  $('script').remove();
   $('html').append("<script src='search.js'></script>");
   console.log($.html())
   // Select the second form using its ID
@@ -380,7 +330,7 @@ app.post('/add-comment',(req,res) => {
 
 
   fs.writeFileSync('./public/files/comments.json',JSON.stringify(paresedComments));
-  res.status(200).send('The Comment Added. You Can See It In This <a href="/comments">Link</a>');
+  res.status(200).redirect('/comments');
 })
 
 app.listen(3000, () => {
