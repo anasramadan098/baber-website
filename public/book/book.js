@@ -72,7 +72,7 @@ fetch('../files/booking.json').then(res=> res.json()).then(data=> {
                     let optionDate = new Date().setHours(dateData[0],dateData[1]);
                     // Get Momnent 
                     let moment = new Date();
-                    let test = moment.setHours(moment.getHours(), moment.getMinutes())
+                    let test = moment.setHours(moment.getHours(), moment.getMinutes());
                     if (test <= optionDate) {
                         selectInput.appendChild(option);
                     }
