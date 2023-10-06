@@ -9,12 +9,18 @@ if (day < 10) {
 }
 dateInput.setAttribute('min',`${today.getFullYear()}-${today.getMonth() + 1}-${day}`)
 
-const services = ['Haircut & blowdry', 'Buzz cut', 'Beard trim', 'Haar wassen en föhnen', 'Clean shave', 'Haircut & beard trim & blowdry\n                ', 'Head shave & beard trim', 'Haircut & clean shave', 'Buzz cut & beard']
-
-
+const services = ['Haircut & blowdry,25', 'Buzz cut,20', 'Beard trim,15', 'Hair wash and blowdry,3', 'Clean shave,15', 'Haircut & beard trim & blowdry,35', 'Head shave & beard trim,35', 'Haircut & clean shave,35', 'Buzz cut & beard,30']
 services.map(service=> {
-    let option = `<option value="${service}">${service}</option>`;
+    let option = `<option data-price="${service.split(',')[1]}€" value="${service.split(',')[0]}">${service.split(',')[0]}</option>`;
     return servicesInput.innerHTML += option;
+})
+
+servicesInput.addEventListener('input',function() {
+    services.map(service=> {
+        if (service.split(',')[0] == this.value) {
+            document.querySelector('.price span').innerHTML = service.split(',')[1] + '€'
+        }
+    })
 })
 
 fetch('../files/booking.json').then(res=> res.json()).then(data=> {

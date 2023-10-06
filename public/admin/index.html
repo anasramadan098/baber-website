@@ -5,7 +5,7 @@
         <title>Admin Page</title>
         <style>
                 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-                
+
                 select {
                         position: absolute;
                         top: 0.1%;
@@ -14,10 +14,9 @@
                         border-radius: 6px;
                         border: 1px solid #333;
                 }
-
-                input#search {
+                input.dateAdminInput {
                         display: block;
-                        width: 80%;
+                        width: 30%;
                         position: absolute;
                         top: 0%;
                         left: 0%;
@@ -43,11 +42,15 @@
                         border: 1px solid #333;
                 }
                 form {
+                        display: none;
                         margin-top: 50px;
                         padding: 20px;
                         background-color: #fff;
                         width: fit-content;
                         border-radius: 6px;
+                }
+                form.show {
+                        display: block;
                 }
                 button {
                         display: block;
@@ -62,114 +65,24 @@
                 button:hover {
                         transform: translateX(10px);
                 }
+                @media (max-width:767px) {
+                        body {
+                                justify-content: center;
+                        }
+                }
         </style>
 </head>
 <body>
-        <input type="text" id="search" placeholder="Search ...">
+        <input type="date" class="dateAdminInput">
+
+        <!-- <input type="text" id="search" placeholder="Search ...">
         <select>
-        <option value="ID">ID</option>
-        <option value="Name">Name</option>
-        <option value="Email">Email</option>
-        <option value="tel">Phone</option>
-        <option value="Service">Service</option>
-        <option value="Date">Date</option>
-        </select>       
-<form action="/delete" id="7" method="post">
-      <p>ID:</p>
-      <input type="text" name="id" value="7">
-      <p>Name:</p>
-      <input type="text" name="name" value="Anas">
-      <p>Email:</p>
-      <input type="text" name="email" value="anasramadanking@gmail.com">
-      <p>Phone:</p>
-      <input type="text" name="tel" value="011">
-      <p>Service:</p>
-      <input type="text" name="service" value="Haircut" &="" blowdry="">
-      <p>Date:</p>
-      <input type="text" name="date" value="2023-10-11,15:00">
-      <button data-href="/delete">Delete</button>
-      </form><form action="/delete" id="8" method="post">
-      <p>ID:</p>
-      <input type="text" name="id" value="8">
-      <p>Name:</p>
-      <input type="text" name="name" value="Anas">
-      <p>Email:</p>
-      <input type="text" name="email" value="anasramadanking@gmail.com">
-      <p>Phone:</p>
-      <input type="text" name="tel" value="011">
-      <p>Service:</p>
-      <input type="text" name="service" value="Haircut" &="" blowdry="">
-      <p>Date:</p>
-      <input type="text" name="date" value="2023-10-11,15:30">
-      <button data-href="/delete">Delete</button>
-      </form><form action="/delete" id="9" method="post">
-      <p>ID:</p>
-      <input type="text" name="id" value="9">
-      <p>Name:</p>
-      <input type="text" name="name" value="Anas">
-      <p>Email:</p>
-      <input type="text" name="email" value="anasramadanking@gmail.com">
-      <p>Phone:</p>
-      <input type="text" name="tel" value="011">
-      <p>Service:</p>
-      <input type="text" name="service" value="Haircut" &="" blowdry="">
-      <p>Date:</p>
-      <input type="text" name="date" value="2023-10-11,16:00">
-      <button data-href="/delete">Delete</button>
-      </form><form action="/delete" id="10" method="post">
-      <p>ID:</p>
-      <input type="text" name="id" value="10">
-      <p>Name:</p>
-      <input type="text" name="name" value="Anas">
-      <p>Email:</p>
-      <input type="text" name="email" value="anasramadanking@gmail.com">
-      <p>Phone:</p>
-      <input type="text" name="tel" value="011">
-      <p>Service:</p>
-      <input type="text" name="service" value="Haircut" &="" blowdry="">
-      <p>Date:</p>
-      <input type="text" name="date" value="2023-10-11,16:30">
-      <button data-href="/delete">Delete</button>
-      </form><form action="/delete" id="11" method="post">
-      <p>ID:</p>
-      <input type="text" name="id" value="11">
-      <p>Name:</p>
-      <input type="text" name="name" value="Anas">
-      <p>Email:</p>
-      <input type="text" name="email" value="anasramadanking@gmail.com">
-      <p>Phone:</p>
-      <input type="text" name="tel" value="011">
-      <p>Service:</p>
-      <input type="text" name="service" value="Haircut" &="" blowdry="">
-      <p>Date:</p>
-      <input type="text" name="date" value="2023-10-11,17:00">
-      <button data-href="/delete">Delete</button>
-      </form><form action="/delete" id="12" method="post">
-      <p>ID:</p>
-      <input type="text" name="id" value="12">
-      <p>Name:</p>
-      <input type="text" name="name" value="Anas">
-      <p>Email:</p>
-      <input type="text" name="email" value="anasramadanking@gmail.com">
-      <p>Phone:</p>
-      <input type="text" name="tel" value="011">
-      <p>Service:</p>
-      <input type="text" name="service" value="Haircut" &="" blowdry="">
-      <p>Date:</p>
-      <input type="text" name="date" value="2023-10-11,17:30">
-      <button data-href="/delete">Delete</button>
-      </form><form action="/delete" id="13" method="post">
-      <p>ID:</p>
-      <input type="text" name="id" value="13">
-      <p>Name:</p>
-      <input type="text" name="name" value="Anas">
-      <p>Email:</p>
-      <input type="text" name="email" value="anasramadanking@gmail.com">
-      <p>Phone:</p>
-      <input type="text" name="tel" value="011">
-      <p>Service:</p>
-      <input type="text" name="service" value="Haircut" &="" blowdry="">
-      <p>Date:</p>
-      <input type="text" name="date" value="2023-10-05,17:30">
-      <button data-href="/delete">Delete</button>
-      </form><script src="search.js"></script></body></html>
+                <option value="ID">ID</option>
+                <option value="Name">Name</option>
+                <option value="Email">Email</option>
+                <option value="Phone">Phone</option>
+                <option value="Service">Service</option>
+                <option value="Date">Date</option>
+        </select> -->
+
+</body><script src="search.js"></script></html>

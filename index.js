@@ -274,18 +274,8 @@ app.post('/delete',(req,res) => {
 
   // Load the HTML into cheerio
   const $ = cheerio.load(htmlData);
-  $('body').prepend(`<input type="text" id="search" placeholder="Search ...">
-  <select>
-          <option value="ID">ID</option>
-          <option value="Name">Name</option>
-          <option value="Email">Email</option>
-          <option value="Phone">Phone</option>
-          <option value="Service">Service</option>
-          <option value="Date">Date</option>
-  </select>`)
   $('script').remove();
   $('html').append("<script src='search.js'></script>");
-  console.log($.html())
   // Select the second form using its ID
   const secondForm = $(`#${req.body.id}`);
 
@@ -295,16 +285,21 @@ app.post('/delete',(req,res) => {
   fs.writeFileSync('./public/admin/index.html',$.html());
   // Write On Booking.JSON File
   let bookingJsonFileData = JSON.parse(fs.readFileSync('./public/files/booking.json','utf-8'));
+  console.log('bookingJsonFileData ==>',bookingJsonFileData);
   let bookedDates;
   bookingJsonFileData.map(date=> {
     if (date.day == req.body.date.split(',')[0]) {
-      bookedDates = date.bookedDates.filter(bookedDate => bookedDate != req.body.date.split(',')[1]);
+      bookedDates = date.bookedDates.filter(bookedDate =>  {
+        return bookedDate != req.body.date.split(',')[1]
+      });
       date['bookedDates']  = bookedDates
     }
   })
   // Filter The Dates
-  let filteredBookedDates = bookingJsonFileData.filter(bookDate => bookDate.day !== `${req.body.date.split(',')[0]}`)
-  filteredBookedDates.push({"day":`${req.body.date.split(',')[0]}`, "bookedDates": [...bookedDates]})
+  let filteredBookedDates = bookingJsonFileData.filter(bookDate => bookDate.day !== `${req.body.date.split(',')[0]}`);
+  if (bookedDates.length != 0) {
+    filteredBookedDates.push({"day":`${req.body.date.split(',')[0]}`, "bookedDates": [...bookedDates]})
+  }
   fs.writeFileSync('./public/files/booking.json',JSON.stringify(filteredBookedDates))
 
   res.status(200).redirect('/admin');
