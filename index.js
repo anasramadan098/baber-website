@@ -56,12 +56,7 @@ app.post('/form', (req, res) => {
     let msg;
     if (ifBooked) {
       // Set Msg
-      msg = `<h2>This Date Was Booked. The Dates Booked Is:</h2> <br> ${allData.split(',').map(e=> {
-        let msgData = e.split('_');
-        if (msgData[1] != undefined) {
-          return `<p style="font-size:1.3em;color:#222;">Date: ${msgData[1]}, On This Time: ${msgData[2]} </p> <br>`
-        }
-      })}`
+      msg = `<h2>This Date Was Booked. <a href="/book">Try Again<a> `
 
       res.send(msg);
     } else {
@@ -75,32 +70,41 @@ app.post('/form', (req, res) => {
 
       // Write On Booking.json File The Newest Date  day,avalibleDates
       let bookingJsonFileData = JSON.parse(fs.readFileSync('./public/files/booking.json','utf-8'));
-      // Get The Previous Dates
-      if (bookingJsonFileData.length != 0) {
-        bookingJsonFileData.map(obj=> {
-          if (obj.day == date[0]) {
-            // Remove It
-            bookingJsonFileData =  bookingJsonFileData.slice(bookingJsonFileData.indexOf(obj) + 1)
-            let writeData = obj.bookedDates;
-            obj.bookedDates.map(time => {
-              if (!obj.bookedDates.includes(date[1])) {
-                  writeData.push(date[1]);
-              }
-            })
-            bookingJsonFileData.push({"day":date[0], "bookedDates": writeData})
-          } else {
 
-            bookingJsonFileData.push({"day":date[0], "bookedDates": [date[1]]})
-
-          }
-        })      
-      } else {
-        bookingJsonFileData.push({"day":date[0], "bookedDates": [date[1]]})
-        // Write On The File The New Data
+      // Get New Booking
+      const newBooking = {
+        day:date[0],
+        bookedDates: [date[1]]
       }
 
-      // Write On The File The New Data
-      fs.writeFileSync('./public/files/booking.json',JSON.stringify(bookingJsonFileData))
+        // Get The Old Data And Remove Current
+        let prevDataOfBookedDates = [];
+
+      // Get The Previous Dates
+      if (bookingJsonFileData.length != 0) {
+        prevDataOfBookedDates = bookingJsonFileData.filter(bookDate => {
+          return bookDate.day != date[0]; 
+        })
+
+        // Add The New Date If The Day Not Found 
+        let isFound = bookingJsonFileData.some(theDate => theDate.day == date[0]);
+        if (!isFound) {
+          prevDataOfBookedDates.push({"day":date[0], "bookedDates": [date[1]]})
+        } else {
+          // Add The New Date If The Day Found Before
+          bookingJsonFileData.map(obj=> {
+            if (obj.day == date[0]) {
+              obj.bookedDates = obj.bookedDates.concat(date[1]);
+              prevDataOfBookedDates.push({"day":date[0], "bookedDates": obj.bookedDates})
+            }
+            })      
+        }
+      } else {
+        prevDataOfBookedDates.push({"day":date[0], "bookedDates": [date[1]]})
+      }
+      console.log(prevDataOfBookedDates);
+      // // Write On The File The New Data
+      fs.writeFileSync('./public/files/booking.json',JSON.stringify(prevDataOfBookedDates))
 
       res.send(`<h1 style="color:#edac66;">${formData.date}</h1> <p>Is Your Booking Date, Don"t Forget. <a href="https://mail.google.com/">Check Your Email</a></p>`);
 
@@ -285,12 +289,11 @@ app.post('/delete',(req,res) => {
   fs.writeFileSync('./public/admin/index.html',$.html());
   // Write On Booking.JSON File
   let bookingJsonFileData = JSON.parse(fs.readFileSync('./public/files/booking.json','utf-8'));
-  console.log('bookingJsonFileData ==>',bookingJsonFileData);
   let bookedDates;
   bookingJsonFileData.map(date=> {
     if (date.day == req.body.date.split(',')[0]) {
       bookedDates = date.bookedDates.filter(bookedDate =>  {
-        return bookedDate != req.body.date.split(',')[1]
+        return bookedDate != req.body.date.split(',')[1];
       });
       date['bookedDates']  = bookedDates
     }
@@ -315,19 +318,6 @@ function sendEmail (mailOptions) {
   });
 
 }
-
-// Get Users Comments
-app.post('/add-comment',(req,res) => {
-  const formData = req.body;
-  const allComents = fs.readFileSync('./public/files/comments.json','utf-8');
-  const paresedComments = JSON.parse(allComents);
-  paresedComments.push({"name":formData.name,"comment":formData.comment})
-
-
-  fs.writeFileSync('./public/files/comments.json',JSON.stringify(paresedComments));
-  res.status(200).redirect('/comments');
-})
-
 app.listen(3000, () => {
   console.log('Server started on port 3000');
 });

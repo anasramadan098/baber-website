@@ -25,6 +25,7 @@ servicesInput.addEventListener('input',function() {
 
 fetch('../files/booking.json').then(res=> res.json()).then(data=> {
     dateInput.addEventListener('input',()=> {
+        console.log(dateInput.value);
         const allTimes = [
             '09:30',
             '10:00',
@@ -45,51 +46,56 @@ fetch('../files/booking.json').then(res=> res.json()).then(data=> {
             '17:30',
         ]
         const inputValue = dateInput.value
-
         let isFound = false
-
-        data.forEach(myDate => {
-            if (inputValue == myDate.day) {
-                isFound = true;
-                selectInput.innerHTML = ' ';
-                // Create Uniqe Option
-                const uniqeOption = document.createElement('option');
-                uniqeOption.value = '';
-                uniqeOption.innerHTML = 'Select Time'
-                uniqeOption.selected = true;
-                uniqeOption.disabled = true;
-                selectInput.appendChild(uniqeOption);
-                // End Create 
-                // Filter Dates
-
-                const filteredTimes = allTimes.filter(time => !myDate.bookedDates.includes(time));
-
-                filteredTimes.map(value => {
-                    const option = document.createElement('option');
-                    option.innerHTML = value;
-                    option.value = value;
-                    if (value == '13:00') {
-                        option.innerHTML = '13:00'
-                    }
-                    // Get the time in milliseconds from the option's value
-                    // Split The Data
-                    let dateData = option.innerHTML.split(':');
-                    // Set New Date
-                    let optionDate = new Date().setHours(dateData[0],dateData[1]);
-                    // Get Momnent 
-                    let moment = new Date();
-                    let test = moment.setHours(moment.getHours(), moment.getMinutes());
-                    if (test <= optionDate) {
+        if (data.length == 0) {
+            allTimes.forEach(time=> {
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                selectInput.appendChild(option);
+            })
+        } else {
+            data.forEach(myDate => {
+                if (inputValue == myDate.day) {
+                    isFound = true;
+                    selectInput.innerHTML = '';
+                    // Create Uniqe Option
+                    const uniqeOption = document.createElement('option');
+                    uniqeOption.value = '';
+                    uniqeOption.innerHTML = 'Select Time'
+                    uniqeOption.selected = true;
+                    uniqeOption.disabled = true;
+                    selectInput.appendChild(uniqeOption);
+                    // End Create 
+                    // Filter Dates
+                    const filteredTimes = allTimes.filter(time => !myDate.bookedDates.includes(time));
+                    filteredTimes.map(value => {
+                        const option = document.createElement('option');
+                        option.innerHTML = value;
+                        option.value = value;
+                        // Get the time in milliseconds from the option's value
+                        // Split The Data
+                        let dateData = option.innerHTML.split(':');
+                        // Set New Date
+                        let optionDate = new Date().setHours(dateData[0],dateData[1]);
+                        // Get Momnent 
+                        let moment = new Date();
+                        let test = moment.setHours(moment.getHours(), moment.getMinutes());
+                        if (test <= optionDate) {
+                            selectInput.appendChild(option);
+                        }
+                    })
+                } else {
+                    allTimes.forEach(time=> {
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
                         selectInput.appendChild(option);
-                    }
-                })
-            }
-        });
-
-
-        if (!isFound) {
-            selectInput.innerHTML = lastSelectData;
+                    })
+                }
+            });
         }
+
         if (new Date(inputValue).toUTCString().split(',')[0] == 'Sun') {
             selectInput.innerHTML = '<option selected disabled value="">Holiday Time</option>'
         }

@@ -5,7 +5,11 @@
         <title>Admin Page</title>
         <style>
                 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-
+                * {
+                        padding: 0;
+                        margin: 0;
+                        box-sizing: border-box;
+                }
                 select {
                         position: absolute;
                         top: 0.1%;
@@ -15,8 +19,9 @@
                         border: 1px solid #333;
                 }
                 input.dateAdminInput {
+                        margin: 20px 0 0 20px;
                         display: block;
-                        width: 30%;
+                        width: 50%;
                         position: absolute;
                         top: 0%;
                         left: 0%;
@@ -29,17 +34,18 @@
                         align-items: center;
                         flex-wrap: wrap;
                         gap: 10px;
-                        justify-content: space-between;
-                        padding-top: 100px;
+                        justify-content: space-around;
+                        padding: 100px 50px 0;
                 }
                 p {
-                        font-size: 2em !important;
+                        font-size: 1.5em !important;
+                        margin: 15px 0;
                 }
                 input {
-                        
-                        padding: 25px;
+                        padding: 15px;
                         border-radius: 6px;
-                        border: 1px solid #333;
+                        border: none;
+                        box-shadow: 1px 1px 4px -1px rgba(0,0,0,0.5);
                 }
                 form {
                         display: none;
@@ -74,15 +80,4 @@
 </head>
 <body>
         <input type="date" class="dateAdminInput">
-
-        <!-- <input type="text" id="search" placeholder="Search ...">
-        <select>
-                <option value="ID">ID</option>
-                <option value="Name">Name</option>
-                <option value="Email">Email</option>
-                <option value="Phone">Phone</option>
-                <option value="Service">Service</option>
-                <option value="Date">Date</option>
-        </select> -->
-
 </body><script src="search.js"></script></html>

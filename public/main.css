@@ -436,13 +436,14 @@ section {
     background-attachment: fixed;
 }
 section.booking {
-    padding: 300px 300px 50px;
+    padding: 300px 100px 50px;
     background-image: url(imgs/about.jpeg);
 }  
 section.booking form{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 30px;
 }
 section.booking form input,
@@ -451,14 +452,14 @@ section.booking form textarea {
     padding: 20px;
     border-radius: 6px;
     border: 1px solid var(--second-color);
-    width: 100%;
+    width: 60%;
     transition: .3s;
 }
 section.booking .price {
     background-color: var(--second-color);
     padding: 20px;
     border-radius: 6px;
-    width: 30%;
+    width: 60%;
 }
 section.booking .price span{
     color: #000;
@@ -621,6 +622,9 @@ section.comments .see-more:hover {
     h2,
     h3 {
         text-align: center;
+    }
+    section.booking .price {
+        width: 60%;
     }
 }
 

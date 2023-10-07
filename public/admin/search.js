@@ -1,24 +1,7 @@
 // Step One
 
-// const searchBar = document.querySelector('#search');
-// const selectValue = document.querySelector('select');
+
 const forms = document.querySelectorAll('form');
-
-// searchBar.addEventListener('input', function() {
-//   if (searchBar.value.length != 0) {
-//     // Loop On Elemetns
-//     forms.forEach(form => {
-//         form.style.display = 'none';
-//         if ( new FormData(form).getAll(selectValue.value.toLowerCase()).join().toLowerCase().includes(searchBar.value)) {
-//             form.style.display = 'block';
-//         }
-//     })
-//     // Specefic The Data By Select Value
-
-//   } else {
-//     forms.forEach(form => form.style.display = 'block')
-//   }
-// });
 
 
 // Step Two
@@ -45,3 +28,23 @@ dateAdminInput.addEventListener('input',function() {
     })
   }
 })
+
+function sortElementsByDateTime() {
+    // Convert the forms into an array for easier sorting
+    const formsArray = Array.from(forms);
+
+    // Sort the forms based on the "date" value
+    formsArray.sort((a, b) => {
+      const dateA = new Date(a.querySelector('input[name="date"]').value);
+      const dateB = new Date(b.querySelector('input[name="date"]').value);
+      return dateA - dateB;
+    });
+
+    forms.forEach(form => form.remove());
+    formsArray.forEach(form => {
+      document.body.appendChild(form);
+    });
+  }
+
+// Call the function to sort the elements
+sortElementsByDateTime();
