@@ -56,19 +56,32 @@ fetch('../files/booking.json')
                     const option = document.createElement('option');
                     option.innerHTML = value;
                     option.value = value;
-                    const now = new Date();
-                    const currentTime = now.setHours(now.getHours(),now.getMinutes());
-                    const [hours,min] = option.value.split(':');
-                    const optionTimeDate = new Date(inputValue).setHours(hours,min);
-                    if (currentTime <= optionTimeDate) {
-                        selectInput.appendChild(option);
-                    }
+                    selectInput.appendChild(option);
                 });
             }
-
+            let filteredOption = []; 
+            selectInput.childNodes.forEach(children => {
+                const now = new Date();
+                const currentTime = now.setHours(now.getHours(),now.getMinutes());
+                if (now < new Date(`${inputValue}`)) {
+                const [hours,min] = children.value.split(':');
+                const optionTimeDate = new Date(inputValue).setHours(hours,min);
+                if (currentTime <= optionTimeDate) {
+                    filteredOption.push(children);
+                }
+                } else {
+                    selectInput.innerHTML = '<option value="" disabled selected>No Dates Avalible Today</option>'
+                }
+            })
+            // Loop On Them And Put It In The Select Menu
+            if (filteredOption.length != 0) {
+                selectInput.innerHTML = '';
+                filteredOption.forEach(option => selectInput.appendChild(option));
+            }
             if (new Date(inputValue).getDay() === 0) {
                 selectInput.innerHTML = '<option selected disabled value="">Holiday Time</option>';
             }
         });
+
     });
 
