@@ -1,8 +1,5 @@
 // Step One
-
-
 const forms = document.querySelectorAll('form');
-
 
 // Step Two
 
