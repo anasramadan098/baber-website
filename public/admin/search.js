@@ -5,7 +5,7 @@ const forms = document.querySelectorAll('form');
 
 const dateAdminInput = document.querySelector('input.dateAdminInput');
 let today = new Date();
-let day = today.getDay() + 1;
+let day = today.getDate();
 if (day < 10) {
     day = '0' + day
 }
